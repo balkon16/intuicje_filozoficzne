@@ -10,8 +10,8 @@ library(readr)
 # obsługa pliku .csv ze słownikiem
 translationContent <- read.delim("dictionary.csv", header = TRUE, sep = "\t", as.is = TRUE) 
 translation <- dlply(translationContent ,.(key), function(s) key = as.list(s))
-
 save(translation, file = "translation.bin")
+
 
 # POWER UP THE BASS CANNON 
 s1phil = read.csv('wyniki_s1_phil.csv')

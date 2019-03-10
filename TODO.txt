@@ -1,0 +1,15 @@
+ZAKŁADKA "Procenty":
+1. Wykres "Odpowiedź pozytywna": Zmienić oś y tak, żeby wyświetlała procenty.
+2. Wykres "Zmiany w odpowiedziach": Na osi y dać procenty.
+3. Wykres "Zmiany w odpowiedzach": Gdy będziemy mieli trzy semestry powstanie 18 słupków - należy inaczej przedstawić zmiany w odpowiedziach.
+4. Wykres "Stopień przekonania": Zmienić nazwę osi y na "średnia"  
+
+ZAKŁADKA "Średnie"
+
+
+Kripke: problem ze zbyt długimi nazwa na osi x - albo skrócić albo zrobić coś, żeby wyświetlały się całe
+Kripke: nie wyświetlają się dane na wykresie w "Średnie"
+
+Nozick: nie wyświetlają się dane na wykresie w "Średnie"
+
+Partif: nie wyświetlaja się dane na wykresie w "Średnie"

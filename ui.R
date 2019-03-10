@@ -1,0 +1,47 @@
+ui <- fixedPage(
+  tags$head(
+    tags$style(HTML(".scenariusz {font-size: 16px;} .wnioski {font-size: 16px;}"))),
+  # Application title
+  
+  fluidRow(
+    column(10,
+           selectInput("scenariusz",
+                       "Wybierz scenariusz",
+                       c('Gettier', 
+                         'Goldman',
+                         'Kripke',
+                         'Lehrer',
+                         'Knobe',
+                         'Nozick',
+                         'Frankfurt I',
+                         'Frankfurt II',
+                         'Frankfurt III',
+                         'Parfit',
+                         'Putnam',
+                         'Thomson'))
+    ),
+    column(2, selectInput("language", "Choose language", c("polski", "English")))),
+  
+  fluidRow(
+    column(7,
+           tabsetPanel(type = 'tabs',
+                       tabPanel("Procenty", plotlyOutput("intuicje_plot", width = "100%", height = "330px")),
+                       tabPanel("Średnie", plotlyOutput("pewnosc_razy_odpowiedz_plot", width = "100%", height = "300px"))
+                       
+           )
+    ),
+    
+    column(5,
+           plotlyOutput("intuicje_plot_zmiana", width ='100%', height = "350px")
+    )),
+  fluidRow(
+    column(3, htmlOutput('wnioski_html'), class = 'wnioski'),
+    column(5, htmlOutput('scenariusz_html', class = 'scenariusz')),
+    column(4,
+           plotlyOutput("pewnosc_plot", width ='100%', height = "300px")
+    )
+  )
+)
+
+
+ui

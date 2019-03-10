@@ -22,7 +22,7 @@ ui <- fixedPage(
                          'Putnam',
                          'Thomson'))
     ),
-    column(2, radioButtons(inputId = "language", label = "",
+    column(2, radioButtons(inputId = "language", label = textOutput("choose_language"),
                            choices = c("English" = "en", "Polski" = "pl"),
                            selected = "en"))),
   

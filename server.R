@@ -111,6 +111,10 @@ server <- function(input, output) {
     tr("average")
   })
   
+  output$choose_language <- renderText({
+    tr("choose_language")
+  })
+  
   ### koniec 
   
 

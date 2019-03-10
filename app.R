@@ -95,12 +95,8 @@ tabelka = data.frame(scenariusz = c('Gettier',
                                          'Frank jest winny śmierci Furta',
                                          'Parfit',
                                          'Odpowiedź pozytywna (XYZ to woda)')
-                     
                      )
 
-
-
-# Define UI for application that draws a histogram
 ui <- fixedPage(
    tags$head(
      tags$style(HTML(".scenariusz {font-size: 16px;} .wnioski {font-size: 16px;}"))),
@@ -148,17 +144,17 @@ ui <- fixedPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
    
-    output$scenariusz_html = renderUI(HTML(read_file(paste('scenarios/', tabelka[tabelka$scenariusz == input$scenariusz,]$html, sep = ''))))
-    output$wnioski_html = renderUI(HTML(read_file(paste('analyses/', tabelka[tabelka$scenariusz == input$scenariusz,]$html, sep = ''))))
+    output$scenariusz_html = renderUI(HTML(read_file(paste0('scenarios/', tabelka[tabelka$scenariusz == input$scenariusz,]$html))))
+    output$wnioski_html = renderUI(HTML(read_file(paste0('analyses/', tabelka[tabelka$scenariusz == input$scenariusz,]$html))))
     
     output$intuicje_plot<- renderPlotly({
       zmienna = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna)
       title1 = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title1)
-      s1p = prop.table(table(phil[[paste(zmienna, '.s1', sep = '')]]))[2]
-      s2p = prop.table(table(phil[[paste(zmienna, '.s2', sep = '')]]))[2]
+      s1p = prop.table(table(phil[[paste0(zmienna, '.s1')]]))[2]
+      s2p = prop.table(table(phil[[paste0(zmienna, '.s2')]]))[2]
       
-      s1c = prop.table(table(contr[[paste(zmienna, '.s1', sep = '')]]))[2]
-      s2c = prop.table(table(contr[[paste(zmienna, '.s2', sep = '')]]))[2]
+      s1c = prop.table(table(contr[[paste0(zmienna, '.s1')]]))[2]
+      s2c = prop.table(table(contr[[paste0(zmienna, '.s2')]]))[2]
       s = c('Filozofowie', 'Grupa kontrolna')
       data = data.frame(Grupa = s, S1 = c(s1p, s1c), S2 = c(s2p, s2c), 
                         S1text = round(c(s1p, s1c)*100, 1),
@@ -190,12 +186,12 @@ server <- function(input, output) {
    
    output$intuicje_plot_zmiana<- renderPlotly({
       zmienna = tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna
-      tab = table(phil[[paste(zmienna, '.s1', sep = '')]], phil[[paste(zmienna, '.s2', sep = '')]], dnn = c('S1', 'S2')) # Tabela 
+      tab = table(phil[[paste0(zmienna, '.s1')]], phil[[paste0(zmienna, '.s2')]], dnn = c('S1', 'S2')) # Tabela 
       tab = prop.table(tab)
       data1 = data.frame(tab)
       data1$change = paste(data1$S1, data1$S2, sep = '-')
       
-      tab = table(contr[[paste(zmienna, '.s1', sep = '')]], contr[[paste(zmienna, '.s2', sep = '')]], dnn = c('S1', 'S2')) # Tabela 
+      tab = table(contr[[paste0(zmienna, '.s1')]], contr[[paste0(zmienna, '.s2')]], dnn = c('S1', 'S2')) # Tabela 
       tab = prop.table(tab)
       data2 = data.frame(tab)
       data2$change = paste(data2$S1, data2$S2, sep = '-')
@@ -222,8 +218,8 @@ server <- function(input, output) {
    
    output$pewnosc_plot <- renderPlotly({
       zmienna = tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna
-      dataAllSummary <- summarySE(data_all, measurevar=paste(zmienna, '...poziom', sep = ''), groupvars=c("Grupa", "Semestr"), na.rm = TRUE)
-      dataAllSummary$mean = dataAllSummary[[paste(zmienna, '...poziom', sep = '')]]
+      dataAllSummary <- summarySE(data_all, measurevar=paste0(zmienna, '...poziom'), groupvars=c("Grupa", "Semestr"), na.rm = TRUE)
+      dataAllSummary$mean = dataAllSummary[[paste0(zmienna, '...poziom')]]
       ci = dataAllSummary$ci
       p <- plot_ly(data = dataAllSummary[which(dataAllSummary$Grupa == 'Filozofowie'),],
                    x = ~Semestr,
@@ -248,17 +244,17 @@ server <- function(input, output) {
       title2 = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title2)
       
       data_all_l = smartbind(s1phil, s1contr, s2phil, s2contr)
-      data_all_l = data_all_l[!is.na(data_all_l[[paste(zmienna, '...poziom', sep = '')]]), ]
+      data_all_l = data_all_l[!is.na(data_all_l[[paste0(zmienna, '...poziom')]]), ]
       data_all_l = data_all_l[!is.na(data_all_l[[zmienna]]), ]
       data_all_l[as.character(data_all_l[[zmienna]]) == 'Nie',
-                 paste(zmienna, '...poziomX', sep = '')] = data_all_l[as.character(data_all_l[[zmienna]]) == 'Nie', paste(zmienna, '...poziom', sep = '')] * -1 
+                 paste0(zmienna, '...poziomX')] = data_all_l[as.character(data_all_l[[zmienna]]) == 'Nie', paste0(zmienna, '...poziom')] * -1 
       
       data_all_l[data_all_l[[zmienna]] == 'Tak',
-                 paste(zmienna, '...poziomX', sep = '')] = data_all_l[data_all_l[[zmienna]] == 'Tak', paste(zmienna, '...poziom', sep = '')] 
+                 paste0(zmienna, '...poziomX')] = data_all_l[data_all_l[[zmienna]] == 'Tak', paste0(zmienna, '...poziom')] 
       
       
-      dataAllSummary <- summarySE(data_all_l, measurevar=paste(zmienna, '...poziomX', sep = ''), groupvars=c("Grupa", "Semestr"), na.rm = TRUE)
-      dataAllSummary$mean = dataAllSummary[[paste(zmienna, '...poziomX', sep = '')]]
+      dataAllSummary <- summarySE(data_all_l, measurevar=paste0(zmienna, '...poziomX'), groupvars=c("Grupa", "Semestr"), na.rm = TRUE)
+      dataAllSummary$mean = dataAllSummary[[paste0(zmienna, '...poziomX')]]
       dataAllSummary$meanText = as.character(round(dataAllSummary$mean, 3))
       ci = dataAllSummary$ci
       print(dataAllSummary)

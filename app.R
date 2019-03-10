@@ -103,7 +103,7 @@ ui <- fixedPage(
    # Application title
    
    fluidRow(
-      column(2,
+      column(10,
          selectInput("scenariusz",
                      "Wybierz scenariusz",
                      c('Gettier', 
@@ -118,7 +118,8 @@ ui <- fixedPage(
                        'Parfit',
                        'Putnam',
                        'Thomson'))
-      )),
+      ),
+      column(2, selectInput("language", "Choose language", c("polski", "English")))),
       
    fluidRow(
       column(7,

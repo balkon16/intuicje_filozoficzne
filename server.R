@@ -77,20 +77,7 @@ tabelka = data.frame(scenariusz = c('Gettier',
                                          'Frankfurt3',
                                          'Parfit',
                                          'Putnam'),
-                     
-                     title1 = c('Odpowiedź pozytywna (Bartek wie)',
-                                'Odpowiedź pozytywna (Zuza wie)',
-                                'Odpowiedź deskrypcjonistyczna (oszust)',
-                                'Odpowiedź pozytywna (Jan wie)',
-                                'Odpowiedź pozytywna (obowiązek)',
-                                'Odpowiedź pozytywna (umyślnie)',
-                                'Odpowiedź "pozostać w świecie rzeczywistym"',
-                                'Frank mógł nie zabić Furta',
-                                'Frank jest odpowiedzialny za śmierć Furta',
-                                'Frank jest winny śmierci Furta',
-                                'Parfit',
-                                'Odpowiedź pozytywna (XYZ to woda)'),
-                     title2 = c('Odpowiedź pozytywna (Bartek wie)',
+                     title1 = c(paste("Odpowiedź pozytywna", "(Bartek wie)", sep=" "), 
                                 'Odpowiedź pozytywna (Zuza wie)',
                                 'Odpowiedź deskrypcjonistyczna (oszust)',
                                 'Odpowiedź pozytywna (Jan wie)',
@@ -225,7 +212,7 @@ server <- function(input, output) {
   
   output$pewnosc_razy_odpowiedz_plot <- renderPlotly({
     zmienna = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna)
-    title2 = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title2)
+    title1 = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title2)
     
     data_all_l = smartbind(s1phil, s1contr, s2phil, s2contr)
     data_all_l = data_all_l[!is.na(data_all_l[[paste0(zmienna, '...poziom')]]), ]
@@ -255,7 +242,7 @@ server <- function(input, output) {
                                  thickness = 1)) %>%
       add_trace(data = dataAllSummary[which(dataAllSummary$Grupa == 'Grupa kontrolna'),],
                 name = tr('ctrl')) %>%
-      layout(title = title2,
+      layout(title = title1,
              xaxis = list(title = ''),
              yaxis = list(title = '', range = c(-5,5)),
              legend = list(orientation = 'h'),

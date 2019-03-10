@@ -100,8 +100,29 @@ tabelka = data.frame(scenariusz = c('Gettier',
 
 server <- function(input, output) {
   
-  output$scenariusz_html = renderUI(HTML(read_file(paste0('scenarios/', tabelka[tabelka$scenariusz == input$scenariusz,]$html))))
-  output$wnioski_html = renderUI(HTML(read_file(paste0('analyses/', tabelka[tabelka$scenariusz == input$scenariusz,]$html))))
+  tr <- function(text){ # funkcja na podstawie klucza (argument text) wybiera odpowiedni element listy
+    sapply(text,function(s) translation[[s]][[input$language]], USE.NAMES=FALSE)
+  }
+  
+  ### elementy, które zmieniają się w zależności od wybranego języka i muszą zostać przekazane do UI ###
+  output$choose_scenario <- renderText({ 
+    tr("choose_scenario")
+  })
+  
+  output$fraction <- renderText({
+    tr("fraction")
+  })
+  
+  output$average <- renderText({
+    tr("average")
+  })
+  
+  ### koniec 
+  
+
+  
+  output$scenariusz_html = renderUI(HTML(read_file(paste0(paste(c('scenarios_', input$language, "/"), collapse = ""), tabelka[tabelka$scenariusz == input$scenariusz,]$html))))
+  output$wnioski_html = renderUI(HTML(read_file(paste0(paste(c('analyses_', input$language, "/"), collapse = ""), tabelka[tabelka$scenariusz == input$scenariusz,]$html))))
   
   output$intuicje_plot<- renderPlotly({
     zmienna = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna)
@@ -111,7 +132,7 @@ server <- function(input, output) {
     
     s1c = prop.table(table(contr[[paste0(zmienna, '.s1')]]))[2]
     s2c = prop.table(table(contr[[paste0(zmienna, '.s2')]]))[2]
-    s = c('Filozofowie', 'Grupa kontrolna')
+    s = c(tr('phil'), tr('ctrl'))
     data = data.frame(Grupa = s, S1 = c(s1p, s1c), S2 = c(s2p, s2c), 
                       S1text = round(c(s1p, s1c)*100, 1),
                       S2text = round(c(s2p, s2c)*100, 1))
@@ -119,13 +140,13 @@ server <- function(input, output) {
                 x = ~Grupa,
                 y = ~S1,
                 type = 'bar',
-                name = 'Semestr 1',
+                name = tr('sem1'),
                 text = ~S1text,
                 textposition = 'auto',
                 textfont = list(size = 25),
                 color = I('#bcbddc')) %>%
       add_trace(y = ~S2,
-                name = 'Semestr 2',
+                name = tr('sem2'),
                 text = ~S2text,
                 textposition = 'auto',
                 color = I('#756bb1')) %>%
@@ -159,10 +180,10 @@ server <- function(input, output) {
                 x = ~change,
                 y = ~Freq.x,
                 type = 'bar',
-                name = 'Filozofowie') %>%
+                name = tr('phil')) %>%
       add_trace(y = ~Freq.y,
-                name = 'Grupa kontrolna') %>%
-      layout(title = 'Zmiany w odpowiedziach',
+                name = tr('ctrl')) %>%
+      layout(title = tr('ans_changes'),
              yaxis = list(title = ''),
              xaxis = list(title=''),
              barmode = 'group',
@@ -181,12 +202,12 @@ server <- function(input, output) {
                  x = ~Semestr,
                  y = ~mean,
                  type = 'bar',
-                 name = 'Filozofowie',
+                 name = tr('phil'),
                  error_y = ~list(array = ci,
                                  color = '#000000')) %>%
       add_trace(data = dataAllSummary[which(dataAllSummary$Grupa == 'Grupa kontrolna'),],
-                name = 'Grupa kontrolna') %>%
-      layout(title = 'Stopień przekonania',
+                name = tr('ctrl')) %>%
+      layout(title = tr("belief_degree"),
              xaxis = list(title = ''),
              legend = list(orientation = 'h'),
              font = list(size=15),
@@ -221,12 +242,12 @@ server <- function(input, output) {
                  text = ~meanText,
                  textposition = 'auto',
                  textfont = list(size = 25),
-                 name = 'Filozofowie',
+                 name = tr('phil'),
                  error_y = ~list(array = ci,
                                  color = '#555555',
                                  thickness = 1)) %>%
       add_trace(data = dataAllSummary[which(dataAllSummary$Grupa == 'Grupa kontrolna'),],
-                name = 'Grupa kontrolna') %>%
+                name = tr('ctrl')) %>%
       layout(title = title2,
              xaxis = list(title = ''),
              yaxis = list(title = '', range = c(-5,5)),

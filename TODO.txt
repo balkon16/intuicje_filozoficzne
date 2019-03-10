@@ -13,3 +13,5 @@ Kripke: nie wyświetlają się dane na wykresie w "Średnie"
 Nozick: nie wyświetlają się dane na wykresie w "Średnie"
 
 Partif: nie wyświetlaja się dane na wykresie w "Średnie"
+
+Należy zakodować każdą odpowiedź w pliku .csv i tr(title)

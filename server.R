@@ -208,8 +208,6 @@ server <- function(input, output) {
              margin = list(t=60))
   })
   
-  
-  
   output$pewnosc_razy_odpowiedz_plot <- renderPlotly({
     zmienna = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna)
     title1 = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title2)

@@ -79,16 +79,17 @@ tabelka = data.frame(scenariusz = c('Gettier',
                                          'Putnam'),
                      title1 = c("Odpowiedź pozytywna (Bartek wie)", 
                                 'Odpowiedź pozytywna (Zuza wie)',
+                                #'dupa',
                                 'Odpowiedź deskrypcjonistyczna (oszust)',
-                                'Odpowiedź pozytywna (Jan wie)',
-                                'Odpowiedź pozytywna (obowiązek)',
-                                'Odpowiedź pozytywna (umyślnie)',
-                                'Odpowiedź "pozostać w świecie rzeczywistym"',
-                                'Frank mógł nie zabić Furta',
-                                'Frank jest odpowiedzialny za śmierć Furta',
-                                'Frank jest winny śmierci Furta',
+                                'Odpowiedź pozytywna (Jan wie)', #Odpowiedź pozytywna (Jan wie)
+                                'Odpowiedź pozytywna (obowiązek)', 
+                                'odp_poz_umy', 
+                                'poz_swiat_rzecz', 
+                                'Frank_nie_Furt', #Frank mógł nie zabić Furta
+                                'Frank_odp_Furt',
+                                'Frank_winny_Furt',
                                 'Parfit',
-                                'Odpowiedź pozytywna (XYZ to woda)')
+                                'XYZ_woda')
 )
 
 
@@ -124,7 +125,7 @@ server <- function(input, output) {
   
   output$intuicje_plot<- renderPlotly({
     zmienna = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna)
-    title1 = as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title1)
+    title1 = tr(as.character(tabelka[tabelka$scenariusz == input$scenariusz,]$title1))
     s1p = prop.table(table(phil[[paste0(zmienna, '.s1')]]))[2]
     s2p = prop.table(table(phil[[paste0(zmienna, '.s2')]]))[2]
     

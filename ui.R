@@ -1,4 +1,4 @@
-#library(plotly)
+library(plotly)
 
 ui <- fixedPage(
   tags$head(

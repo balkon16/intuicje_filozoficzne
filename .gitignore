@@ -4,3 +4,4 @@
 *.csv
 !dictionary.csv
 translation.bin
+brudnopis.Rmd

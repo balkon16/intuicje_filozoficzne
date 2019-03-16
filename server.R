@@ -167,8 +167,6 @@ server <- function(input, output) {
     data1$S1 <- revalue(data1$S1, c("Tak"=tr("tak"), "Nie"=tr("nie")))
     data1$S2 <- revalue(data1$S2, c("Tak"=tr("tak"), "Nie"=tr("nie")))
     data1$change = paste(data1$S1, data1$S2, sep = '-')
-    print("data1")
-    print(data1)
     
     tab = table(contr[[paste0(zmienna, '.s1')]], contr[[paste0(zmienna, '.s2')]], dnn = c('S1', 'S2')) # Tabela 
     tab = prop.table(tab)
@@ -176,13 +174,8 @@ server <- function(input, output) {
     data2$S1 <- revalue(data2$S1, c("Tak"=tr("tak"), "Nie"=tr("nie"))) # c("Tak"=tr("tak"), "Nie"=tr("nie"))
     data2$S2 <- revalue(data2$S2, c("Tak"=tr("tak"), "Nie"=tr("nie"))) # c("Tak"=tr("tak"), "Nie"=tr("nie"))
     data2$change = paste(data2$S1, data2$S2, sep = '-')
-    print("data2")
-    print(data2)
     
     data = inner_join(data1, data2, by = 'change')
-    print("data")
-    print(data)
-    
     
     p = plot_ly(data,
                 x = ~change,

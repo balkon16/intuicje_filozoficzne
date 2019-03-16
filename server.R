@@ -77,12 +77,11 @@ tabelka = data.frame(scenariusz = c('Gettier',
                                          'Frankfurt3',
                                          'Parfit',
                                          'Putnam'),
-                     title1 = c("Odpowiedź pozytywna (Bartek wie)", 
-                                'Odpowiedź pozytywna (Zuza wie)',
-                                #'dupa',
-                                'Odpowiedź deskrypcjonistyczna (oszust)',
-                                'Odpowiedź pozytywna (Jan wie)', #Odpowiedź pozytywna (Jan wie)
-                                'Odpowiedź pozytywna (obowiązek)', 
+                     title1 = c("odp_poz_Bartek", 
+                                'odp_poz_Zuza',
+                                'odp_desk_oszust',
+                                'odp_poz_Jan_wie', #Odpowiedź pozytywna (Jan wie)
+                                'odp_poz_obowiazek', 
                                 'odp_poz_umy', 
                                 'poz_swiat_rzecz', 
                                 'Frank_nie_Furt', #Frank mógł nie zabić Furta

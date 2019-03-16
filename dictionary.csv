@@ -11,17 +11,17 @@ sem1	1st Semester	Semestr 1
 sem2	2nd Semester	Semestr 2
 sem3	3rd Semester	Semestr 3
 sem4	4th Semester	Semestr 4
-pos_ans Positive answer Odpowiedź pozytywna
+pos_ans Positive answer Odpowiedź twierdząca
 choose_language	Choose language	Wybierz język
-Odpowiedź pozytywna (Bartek wie)	Positive answer (Bob knows)	Odpowiedź pozytywna (Bartek wie)
-Odpowiedź pozytywna (Zuza wie)	Positive answer (Suzy knows)	Odpowiedź pozytywna (Zuza wie)
-Odpowiedź deskrypcjonistyczna (oszust)	Descriptive answer (imposter)	Odpowiedź deskrypcjonistyczna (oszust)
-Odpowiedź pozytywna (Jan wie)	Positive answer (John knows)	Odpowiedź pozytywna (Jan wie)
-Odpowiedź pozytywna (obowiązek)	Positive answer (obligation)	Odpowiedź pozytywna (obowiązek)
-odp_poz_umy	Positive answer (on purpose)	Odpowiedź pozytywna (umyślnie)
+odp_poz_Bartek	Positive answer (Bob knows)	Odpowiedź twierdząca (Bartek wie)
+odp_poz_Zuza	Positive answer (Suzy knows)	Odpowiedź twierdząca (Zuza wie)
+odp_desk_oszust	Descriptive answer (imposter)	Odpowiedź deskrypcjonistyczna (oszust)
+odp_poz_Jan_wie	Positive answer (John knows)	Odpowiedź twierdząca (Jan wie)
+odp_poz_obowiazek	Positive answer (obligation)	Odpowiedź twierdząca (obowiązek)
+odp_poz_umy	Positive answer (on purpose)	Odpowiedź twierdząca (umyślnie)
 poz_swiat_rzecz	PRZETŁUMACZYĆ	Odpowiedź "pozostać w świecie rzeczywistym"
 Frank_nie_Furt	Frank might have not killed Furt	Frank mógł nie zabić Furta
 Frank_odp_Furt	Frank is responsible for Furt's death	Frank jest odpowiedzialny za śmierć Furta
 Frank_winny_Furt	Frank is guilty of killing Furt	Frank jest winny śmierci Furta
 Parfit	Parfit	Parfit
-XYZ_woda	Positive answer (XYZ is water)	Odpowiedź pozytywna (XYZ to woda)
+XYZ_woda	Positive answer (XYZ is water)	Odpowiedź twierdząca (XYZ to woda)

@@ -164,23 +164,33 @@ server <- function(input, output) {
     tab = table(phil[[paste0(zmienna, '.s1')]], phil[[paste0(zmienna, '.s2')]], dnn = c('S1', 'S2')) # Tabela 
     tab = prop.table(tab)
     data1 = data.frame(tab)
+    data1$S1 <- revalue(data1$S1, c("Tak"=tr("tak"), "Nie"=tr("nie")))
+    data1$S2 <- revalue(data1$S2, c("Tak"=tr("tak"), "Nie"=tr("nie")))
     data1$change = paste(data1$S1, data1$S2, sep = '-')
+    print("data1")
+    print(data1)
     
     tab = table(contr[[paste0(zmienna, '.s1')]], contr[[paste0(zmienna, '.s2')]], dnn = c('S1', 'S2')) # Tabela 
     tab = prop.table(tab)
     data2 = data.frame(tab)
+    data2$S1 <- revalue(data2$S1, c("Tak"=tr("tak"), "Nie"=tr("nie"))) # c("Tak"=tr("tak"), "Nie"=tr("nie"))
+    data2$S2 <- revalue(data2$S2, c("Tak"=tr("tak"), "Nie"=tr("nie"))) # c("Tak"=tr("tak"), "Nie"=tr("nie"))
     data2$change = paste(data2$S1, data2$S2, sep = '-')
+    print("data2")
+    print(data2)
     
     data = inner_join(data1, data2, by = 'change')
+    print("data")
+    print(data)
     
     
     p = plot_ly(data,
                 x = ~change,
                 y = ~Freq.x,
                 type = 'bar',
-                name = tr('phil')) %>%
+                name = tr('phil')) %>% # 
       add_trace(y = ~Freq.y,
-                name = tr('ctrl')) %>%
+                name = tr('ctrl')) %>% # 
       layout(title = tr('ans_changes'),
              yaxis = list(title = ''),
              xaxis = list(title=''),

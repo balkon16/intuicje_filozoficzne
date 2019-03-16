@@ -138,13 +138,13 @@ server <- function(input, output) {
                 x = ~Grupa,
                 y = ~S1,
                 type = 'bar',
-                name = tr('sem1'),
+                name = tr('Semestr 1'),
                 text = ~S1text,
                 textposition = 'auto',
                 textfont = list(size = 25),
                 color = I('#bcbddc')) %>%
       add_trace(y = ~S2,
-                name = tr('sem2'),
+                name = tr('Semestr 2'),
                 text = ~S2text,
                 textposition = 'auto',
                 color = I('#756bb1')) %>%
@@ -199,6 +199,7 @@ server <- function(input, output) {
     dataAllSummary <- summarySE(data_all, measurevar=paste0(zmienna, '...poziom'), groupvars=c("Grupa", "Semestr"), na.rm = TRUE)
     dataAllSummary$mean = dataAllSummary[[paste0(zmienna, '...poziom')]]
     ci = dataAllSummary$ci
+    dataAllSummary$Semestr <- unname(sapply(dataAllSummary$Semestr, tr))
     p <- plot_ly(data = dataAllSummary[which(dataAllSummary$Grupa == 'Filozofowie'),],
                  x = ~Semestr,
                  y = ~mean,

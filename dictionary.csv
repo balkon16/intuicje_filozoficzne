@@ -7,10 +7,10 @@ fraction	Fraction	Procentowo
 average	Average	Średnia
 phil	Philosophy students	Studenci filozofii
 ctrl	Control group	Grupa kontrolna
-sem1	1st Semester	Semestr 1
-sem2	2nd Semester	Semestr 2
-sem3	3rd Semester	Semestr 3
-sem4	4th Semester	Semestr 4
+Semestr 1	1st Semester	Semestr 1
+Semestr 2	2nd Semester	Semestr 2
+Semestr 3	3rd Semester	Semestr 3
+Semestr 4	4th Semester	Semestr 4
 pos_ans Positive answer Odpowiedź twierdząca
 choose_language	Choose language	Wybierz język
 odp_poz_Bartek	Positive answer (Bob knows)	Odpowiedź twierdząca (Bartek wie)

@@ -210,6 +210,7 @@ server <- function(input, output) {
                 name = tr('ctrl')) %>%
       layout(title = tr("belief_degree"),
              xaxis = list(title = ''),
+             yaxis = list(title = tr('mean')),
              legend = list(orientation = 'h'),
              font = list(size=15),
              margin = list(t=60))

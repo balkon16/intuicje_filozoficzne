@@ -207,6 +207,159 @@ server <- function(input, output) {
     
   })
   
+  rysuj_diagram_przeplywu <- function(zmienna, ramka_grupa){
+    
+    nazwa_grupy_str <- deparse(substitute(ramka_grupa))
+    print(nazwa_grupy_str)
+    
+    # numer najświeższego semestru; uwaga jest on poza scope funkcji, w której się znajdujemy
+    # liczba_semestrow <- 
+    #   ls(all.names = TRUE) %>% str_match("s\\d+") %>% na.omit() %>% gsub(pattern = "[A-Za-z]+", replacement = "") %>% as.numeric() %>% max()
+    # print_nazwa(liczba_semestrow)
+    # Z tego powodu wpisuję na razie semestr z palca
+    liczba_semestrow <- 2
+    
+    # kolumny, które dotyczą wskazanego scenariusza: odpowiedź i wartość pewności dla każdego semestru (oraz numer identyfikacyjny)
+    cols <- grep(zmienna, colnames(ramka_grupa), value = TRUE)
+    cols <- c("ident", cols)
+    
+    ramka_grupa_wybrane <- ramka_grupa[, cols]
+    
+    # usuwam wiersze bez identyfikacji
+    ramka_grupa_wybrane <- ramka_grupa_wybrane %>%
+      dplyr::filter(!(ident == ""))
+    
+    ramka_grupa_wybrane <- ramka_grupa_wybrane %>% na.omit()
+    
+    # obsłużona sytuacja, że w pierwszym semestrze wcale nie udzielono jednej z możliwych odpowiedzi, ale udzielono ją w którymś następnym semestrze
+    odpowiedzi <- c()
+    for (i in 1:indeks_semestr){
+      if (length(levels(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]])) > length(odpowiedzi)){
+        odpowiedzi <- levels(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]])
+      }
+    }
+    print(odpowiedzi)
+    
+    # tworze napisy typu: S1_Tak, S1_Nie, S2_Tak itd.
+    obiekty <- c()
+    for (i in 1:liczba_semestrow){ 
+      for (odp in odpowiedzi){
+        obiekt <- paste0("S", i, "_", odp)
+        obiekty <- c(obiekty, obiekt)
+      }
+    }
+    print(obiekty)
+    
+    # tworzę listę wierzchołków (source - wychodzące, target - przychodzące). Pamiętam, że S1_Tak, S2_Nie idą każdy do dwóch: S2_Tak oraz S2_Nie
+    source <- c()
+    target <- c()
+    for (i in 0:(length(obiekty)-length(odpowiedzi)-1)) {# -1, bo wierzchołki w source indeksowane są od 0
+      source <- c(source, rep(i, length(odpowiedzi)))
+      for (j in seq(0, length(odpowiedzi)-1)){
+        target <- c(target, i + j + length(odpowiedzi) - (i %% length(odpowiedzi)))
+      }
+    }
+    print(source)
+    print(target)
+    
+    # obsługuje problem, że nie w każdym semestrze udzielono wszystkich możliwych odpowiedzi
+    for (i in 1:indeks_semestr){
+      levels(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]]) <- odpowiedzi
+    }
+    
+    # Liczenie wartości połączeń pomiędzy semestrami - przypadek uogólniony. 
+    # W wierszach tabeli krzyżowej mam odpowiedzi z poprzedniego semestru (i), a w kolumnach następnego semestru (i+1). 
+    # Macierz przechodzę wierszami od lewej do prawej
+    values <- c()
+    for (i in 1:(indeks_semestr - 1)){
+      tab <- table(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]], ramka_grupa_wybrane[[paste0(zmienna, ".s", i+1)]])
+      # print(tab)
+      values <- c(values, as.vector(t(tab))) # spłaszcza transponowaną macierz, czyli kopiuje kolejne wiersze (od lewej do prawej)
+    }
+    
+    # Ramka ze zmianą pewności - przypadek ogólny. Poniższa tabela zawiera wszystkie możliwe pary zmian pewności. 
+    # W odniesieniu do tabeli krzyżowej, trzy kolejne wiersze to jeden wiersz tabeli krzyżowej.
+    belief_changes <- c()
+    for (i in 1:(indeks_semestr - 1)){
+      belief_ramka <- ramka_grupa_wybrane %>%
+        group_by(!!! syms(c(paste0(zmienna, ".s", i), paste0(zmienna, ".s", i+1)))) %>%
+        dplyr::summarise(belief = sum(!! sym(paste0(zmienna, "...poziom.s", i))) - sum(!! sym(paste0(zmienna, "...poziom.s", i+1)))) %>% 
+        ungroup() %>%
+        complete(!!! syms(c(paste0(zmienna, ".s", i), paste0(zmienna, ".s", i+1)))) %>% 
+        mutate(belief = if_else(is.na(belief), 0, belief)) # zamiana NA na 0
+      belief_changes <- c(belief_changes, belief_ramka$belief)
+    }
+    
+    # Aby wartości zmiany pewności wyświetlały się jako kolor należy zmienić je na wektor kolorów. 
+    # Ujemne wartości będą oznaczone przez kolor czerwony, a dodatnie przez zielony:
+    range_col <- colorRamp(c("red","green"))
+    normalized_vector <- (belief_changes - min(belief_changes)) / diff(range(belief_changes)) # uwaga: 0 są zamieniane na coś innego niż 0 - czy chciałbym wycentrować wokół 0?
+    cols <- range_col(normalized_vector)
+    colours_min <- rgb(cols, maxColorValue=256)
+    
+    # Lista z danymi do wyrysowania diagramu przepływu
+    links <- data.frame(source = source,
+                        target = target,
+                        value = values,
+                        colour = colours_min)
+    
+    nodes <- data.frame(name = obiekty)
+    
+    phil_results <- list(nodes = nodes,
+                         links = links)
+    
+    p <- plot_ly(
+      type = "sankey",
+      
+      
+      domain = list(
+        x =  c(0,1),
+        y =  c(0,1)
+      ),
+      orientation = "h",
+      valueformat = ".0f",
+      
+      node = list(
+        label = phil_results$nodes$name,
+        color = terrain.colors(8),
+        pad = 15,
+        thickness = 15,
+        line = list(
+          color = "black",
+          width = 0.5
+        )
+      ),
+      
+      link = list(
+        source = phil_results$links$source,
+        target = phil_results$links$target,
+        value =  phil_results$links$value
+        # , color = phil_results$links$colour   # colorRampPalette(c('dodgerblue', 'dodgerblue4'))(length(colour))[rank(colour)])
+      ) 
+    ) %>% 
+      layout(
+        title = nazwa_grupy_str,
+        font = list(
+          size = 10
+        ),
+        xaxis = list(showgrid = F, zeroline = F),
+        yaxis = list(showgrid = F, zeroline = F)
+      )
+    
+    p
+    
+  }
+  
+  output$przeplyw_odpowiedzi_fil <- renderPlotly(
+    rysuj_diagram_przeplywu(
+      zmienna = tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna,
+      ramka_grupa = phil))
+  
+  output$przeplyw_odpowiedzi_contr <- renderPlotly(
+    rysuj_diagram_przeplywu(
+      zmienna = tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna,
+      ramka_grupa = contr))
+  
   output$pewnosc_plot <- renderPlotly({
     zmienna = tabelka[tabelka$scenariusz == input$scenariusz,]$zmienna
     dataAllSummary <- summarySE(data_all, measurevar=paste0(zmienna, '...poziom'), groupvars=c("Grupa", "Semestr"), na.rm = TRUE)

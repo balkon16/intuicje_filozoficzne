@@ -44,6 +44,12 @@ ui <- fixedPage(
     column(4,
            plotlyOutput("pewnosc_plot", width ='100%', height = "300px")
     )
+  ),
+  fluidRow(
+    column(6, 
+           plotlyOutput("przeplyw_odpowiedzi_fil", width ='100%', height = "350px")),
+    column(6, 
+           plotlyOutput("przeplyw_odpowiedzi_contr", width ='100%', height = "350px"))
   )
 )
 

@@ -323,7 +323,7 @@ server <- function(input, output) {
         label = phil_results$nodes$name,
         color = terrain.colors(8),
         pad = 15,
-        thickness = 15,
+        thickness = 50,
         line = list(
           color = "black",
           width = 0.5

@@ -171,6 +171,11 @@ server <- function(input, output) {
     nazwa_grupy_str <- deparse(substitute(ramka_grupa))
     print(nazwa_grupy_str)
     
+    # użyte w celu zapewnienia kompatybilności ze słownikiem, gdzie mam klucz 'ctrl'
+    if (nazwa_grupy_str == "contr"){
+      nazwa_grupy_str = "ctrl"
+    }
+    
     # numer najświeższego semestru; uwaga jest on poza scope funkcji, w której się znajdujemy
     # liczba_semestrow <- 
     #   ls(all.names = TRUE) %>% str_match("s\\d+") %>% na.omit() %>% gsub(pattern = "[A-Za-z]+", replacement = "") %>% as.numeric() %>% max()
@@ -297,7 +302,7 @@ server <- function(input, output) {
       ) 
     ) %>% 
       layout(
-        title = nazwa_grupy_str,
+        title = tr(nazwa_grupy_str),
         font = list(
           size = 10
         ),

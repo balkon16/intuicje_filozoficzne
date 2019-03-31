@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(plyr)
 library(stringr)
 library(dplyr)
@@ -116,8 +117,14 @@ server <- function(input, output) {
     tr("choose_language")
   })
   
+  output$hide_show_desc_conc <- renderText({
+    tr("hide_show_desc_conc")
+  })
+  
   ### koniec 
   
+  shinyjs::onclick("toggleDescConc",
+                   shinyjs::toggle(id = "opis_wnioski", anim = TRUE)) 
 
   
   output$scenariusz_html = renderUI(HTML(read_file(paste0(paste(c('scenarios_', input$language, "/"), collapse = ""), tabelka[tabelka$scenariusz == input$scenariusz,]$html))))

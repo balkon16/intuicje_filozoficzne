@@ -6,6 +6,7 @@ library(plotly)
 library(Rmisc)
 library(gtools)
 library(readr)
+library(tidyr)
 
 # obsługa pliku .csv ze słownikiem
 translationContent <- read.delim("dictionary.csv", header = TRUE, sep = "\t", as.is = TRUE) 
@@ -233,7 +234,7 @@ server <- function(input, output) {
     
     # obsłużona sytuacja, że w pierwszym semestrze wcale nie udzielono jednej z możliwych odpowiedzi, ale udzielono ją w którymś następnym semestrze
     odpowiedzi <- c()
-    for (i in 1:indeks_semestr){
+    for (i in 1:liczba_semestrow){
       if (length(levels(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]])) > length(odpowiedzi)){
         odpowiedzi <- levels(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]])
       }
@@ -263,7 +264,7 @@ server <- function(input, output) {
     print(target)
     
     # obsługuje problem, że nie w każdym semestrze udzielono wszystkich możliwych odpowiedzi
-    for (i in 1:indeks_semestr){
+    for (i in 1:liczba_semestrow){
       levels(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]]) <- odpowiedzi
     }
     
@@ -271,7 +272,7 @@ server <- function(input, output) {
     # W wierszach tabeli krzyżowej mam odpowiedzi z poprzedniego semestru (i), a w kolumnach następnego semestru (i+1). 
     # Macierz przechodzę wierszami od lewej do prawej
     values <- c()
-    for (i in 1:(indeks_semestr - 1)){
+    for (i in 1:(liczba_semestrow - 1)){
       tab <- table(ramka_grupa_wybrane[[paste0(zmienna, ".s", i)]], ramka_grupa_wybrane[[paste0(zmienna, ".s", i+1)]])
       # print(tab)
       values <- c(values, as.vector(t(tab))) # spłaszcza transponowaną macierz, czyli kopiuje kolejne wiersze (od lewej do prawej)
@@ -280,7 +281,7 @@ server <- function(input, output) {
     # Ramka ze zmianą pewności - przypadek ogólny. Poniższa tabela zawiera wszystkie możliwe pary zmian pewności. 
     # W odniesieniu do tabeli krzyżowej, trzy kolejne wiersze to jeden wiersz tabeli krzyżowej.
     belief_changes <- c()
-    for (i in 1:(indeks_semestr - 1)){
+    for (i in 1:(liczba_semestrow - 1)){
       belief_ramka <- ramka_grupa_wybrane %>%
         group_by(!!! syms(c(paste0(zmienna, ".s", i), paste0(zmienna, ".s", i+1)))) %>%
         dplyr::summarise(belief = sum(!! sym(paste0(zmienna, "...poziom.s", i))) - sum(!! sym(paste0(zmienna, "...poziom.s", i+1)))) %>% 

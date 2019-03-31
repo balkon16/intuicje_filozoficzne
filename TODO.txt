@@ -1,19 +1,16 @@
-ZAKŁADKA "Procenty":
-1. Wykres "Odpowiedź pozytywna": Zmienić oś y tak, żeby wyświetlała procenty.
-2. Wykres "Zmiany w odpowiedziach": Na osi y dać procenty.
-3. Wykres "Zmiany w odpowiedzach": Gdy będziemy mieli trzy semestry powstanie 18 słupków - należy inaczej przedstawić zmiany w odpowiedziach.
-4. Wykres "Stopień przekonania": Zmienić nazwę osi y na "średnia"  
+Sankey diagram:
 
-ZAKŁADKA "Średnie"
+2. Kolor połączenia ma oznaczać zmianę stopnia pewności:
+  a. 0 - brak zmiany ma być zaznaczony kolorem szarym (przyjęty gradient to czerwony-szary-zielony)
+  b. problem: kolrów w wektorze z kolorami (ten, który wstawiam do funkcji rysującej) musi być tyle samo co połączeń pomiędzy wierzchołkami (nie zwraca błędu, gdy jest więcej, ale niewłaściwie się rysuje). Każdą wartość `belief_changes` należy zmapować do koloru, ale z takim założeniem, że wartości blisko siebie powinny mieć podobny kolor, a wartości około 0 powinny być szare. 
+3. W prostokątach ma być wpisana wartość procentowa (100% to odpowiedzi w całym semestrze)
+4. Pokolorować każdy z pionów (wszystkie prostokąty w danym semestrze) tak, żeby oznaczał kolor stopień przekonania
 
+Wykres Answer Changes:
 
-Kripke: problem ze zbyt długimi nazwa na osi x - albo skrócić albo zrobić coś, żeby wyświetlały się całe
-Kripke: nie wyświetlają się dane na wykresie w "Średnie"
+1. Usunąć
 
-Nozick: nie wyświetlają się dane na wykresie w "Średnie"
+Zakładka Averages:
 
-Partif: nie wyświetlaja się dane na wykresie w "Średnie"
+1. Usunąć i przenieść wykres
 
-Należy zakodować każdą odpowiedź w pliku .csv i tr(title
-
-Tłumaczenia scenarios: Putnam, Nozick, Knobe

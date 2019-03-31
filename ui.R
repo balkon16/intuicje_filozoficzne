@@ -32,7 +32,8 @@ ui <- fixedPage(
   div(id='opis_wnioski',
       fluidRow(
         column(8, htmlOutput('scenariusz_html', class = 'scenariusz')),
-        column(4, htmlOutput('wnioski_html'), class = 'wnioski'))
+        column(4, htmlOutput('wnioski_html'), class = 'wnioski')),
+      br()
   ),
   
   fluidRow(

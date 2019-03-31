@@ -27,16 +27,12 @@ ui <- fixedPage(
                            selected = "en"))),
   
   fluidRow(
-    column(7,
+    column(12,
            tabsetPanel(type = 'tabs',
                        tabPanel(textOutput("fraction"), plotlyOutput("intuicje_plot", width = "100%", height = "330px")),
                        tabPanel(textOutput("average"), plotlyOutput("pewnosc_razy_odpowiedz_plot", width = "100%", height = "300px"))
                        
            )
-    ),
-    
-    column(5,
-           plotlyOutput("intuicje_plot_zmiana", width ='100%', height = "350px")
     )),
   fluidRow(
     column(3, htmlOutput('wnioski_html'), class = 'wnioski'),

@@ -27,6 +27,12 @@ ui <- fixedPage(
                            selected = "en"))),
   
   fluidRow(
+    column(6, 
+           plotlyOutput("przeplyw_odpowiedzi_fil", width ='100%', height = "400px")),
+    column(6, 
+           plotlyOutput("przeplyw_odpowiedzi_contr", width ='100%', height = "400px"))
+  ),
+  fluidRow(
     column(12,
            tabsetPanel(type = 'tabs',
                        tabPanel(textOutput("fraction"), plotlyOutput("intuicje_plot", width = "100%", height = "330px")),
@@ -40,13 +46,8 @@ ui <- fixedPage(
     column(4,
            plotlyOutput("pewnosc_plot", width ='100%', height = "300px")
     )
-  ),
-  fluidRow(
-    column(6, 
-           plotlyOutput("przeplyw_odpowiedzi_fil", width ='100%', height = "350px")),
-    column(6, 
-           plotlyOutput("przeplyw_odpowiedzi_contr", width ='100%', height = "350px"))
   )
+
 )
 
 
